@@ -27,6 +27,7 @@ pub struct NotDivisibleError {
 // Otherwise, return a suitable error.
 pub fn divide(a: i32, b: i32) -> Result<i32, DivisionError> {
     todo!();
+    
 }
 
 // Complete the function and return a value of the correct type so the test
