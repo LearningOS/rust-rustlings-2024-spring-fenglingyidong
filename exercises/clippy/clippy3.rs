@@ -13,14 +13,11 @@ fn main() {
         my_option.unwrap();
     }
 
-    let my_arr = &[
-        -1, -2, -3,
-        -4, -5, -6
-    ];
+    let my_arr = &[-1, -2, -3 ,-4, -5, -6];
     println!("My array! Here it is: {:?}", my_arr);
 
-    vec![1, 2, 3, 4, 5].resize(0, 5);
-    println!("This Vec is empty, see? {:?}", ());
+    let my_vec = vec![1, 2, 3, 4, 5];
+    println!("This Vec is empty, see? {:?}", my_vec);
 
     let mut value_a = 45;
     let mut value_b = 66;
