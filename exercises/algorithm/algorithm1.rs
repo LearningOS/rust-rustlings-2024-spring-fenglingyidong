@@ -2,7 +2,7 @@
 	single linked list merge
 	This problem requires you to merge two ordered singly linked lists into one ordered singly linked list
 */
-// I AM NOT DONE
+
 
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
@@ -70,13 +70,39 @@ impl<T> LinkedList<T> {
         }
     }
 	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
+    where 
+        T: Clone + std::cmp::PartialOrd             //  if no add Clone     : move occurs because value has type `T`, which does not implement the `Copy` trait
 	{
 		//TODO
-		Self {
-            length: 0,
-            start: None,
-            end: None,
+        
+		let mut list :LinkedList<T> = LinkedList::new();
+        let mut current_a = list_a.start;
+        let mut current_b = list_b.start;
+
+        while current_a.is_some() && current_b.is_some() {
+            let val_a = unsafe{ &current_a.unwrap().as_ref().val };
+            let val_b = unsafe{ &current_b.unwrap().as_ref().val };
+            if val_a < val_b {
+                list.add(val_a.clone());
+                current_a = unsafe{ current_a.unwrap().as_ref().next };
+            } else {
+                list.add(val_b.clone());
+                current_b = unsafe{ current_b.unwrap().as_ref().next };
+            }
         }
+        while current_a.is_some() {
+            let val_a = unsafe{ &current_a.unwrap().as_ref().val };
+            list.add(val_a.clone());
+            current_a = unsafe{ current_a.unwrap().as_ref().next };
+        }
+        while current_b.is_some() {
+            let val_b = unsafe{ &current_b.unwrap().as_ref().val };
+            list.add(val_b.clone());
+            current_b = unsafe{ current_b.unwrap().as_ref().next };
+        }
+        list
+        
+        
 	}
 }
 
