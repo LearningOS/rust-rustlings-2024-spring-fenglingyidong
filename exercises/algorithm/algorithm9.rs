@@ -2,7 +2,7 @@
 	heap
 	This question requires you to implement a binary heap function
 */
-// I AM NOT DONE
+
 
 use std::cmp::Ord;
 use std::default::Default;
@@ -38,6 +38,16 @@ where
 
     pub fn add(&mut self, value: T) {
         //TODO
+        self.items.push(value);
+        self.count += 1;
+
+        let mut cur = self.count;
+        let mut parent = self.parent_idx(cur);
+        while parent > 0 && (self.comparator)(&self.items[cur],&self.items[parent]) {
+            self.items.swap(cur,parent);
+            cur = parent;
+            parent = self.parent_idx(cur);
+        }
     }
 
     fn parent_idx(&self, idx: usize) -> usize {
@@ -58,7 +68,15 @@ where
 
     fn smallest_child_idx(&self, idx: usize) -> usize {
         //TODO
-		0
+		let left = self.left_child_idx(idx);
+        let right = self.right_child_idx(idx);
+        if right > self.count {
+            left
+        } else if (self.comparator)(&self.items[left],&self.items[right]) {
+            left
+        } else {
+            right
+        }
     }
 }
 
@@ -85,7 +103,37 @@ where
 
     fn next(&mut self) -> Option<T> {
         //TODO
-		None
+		if self.is_empty() {
+            None
+        } else {
+            self.items.swap(1,self.count);
+            self.count -= 1;
+
+            let res = self.items.pop();
+            let mut idx = 1;
+            let mut left = self.left_child_idx(idx);
+            let mut right = self.right_child_idx(idx);
+            while left <= self.count {
+                if right >= self.items.len() {
+                    if (self.comparator)(&self.items[idx],&self.items[left]) {
+                        break;
+                    } else {
+                        self.items.swap(idx,left);
+                        idx = left;
+                    }
+                } else {
+                    if (self.comparator)(&self.items[right],&self.items[left]) {
+                        left +=1;
+                    }
+                    self.items.swap(idx,left);
+                    idx = left;
+                }
+                left = self.left_child_idx(idx);
+                right = self.right_child_idx(idx);
+            }
+            res
+        }
+        
     }
 }
 
